@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "alnoda-workspace.fullname" . }}-test-connection"
+  labels:
+    {{- include "alnoda-workspace.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "alnoda-workspace.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
